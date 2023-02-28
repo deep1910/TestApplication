@@ -1,10 +1,19 @@
 import React from 'react'
 
-const Button = ({onClick = () => {}, text='button'}) => {
+const Button = ({isSmall='false',onClick = () => {}, text='button'}) => {
   return (
-    <button className='p-3 text-center w-28 rounded-md font-bold tracking-wider text-white text-lg bg-green-500'>
+    <>
+  {
+    isSmall ? 
+    <button className='p-1 text-center active:scale-90 transition-all duration-150 w-28 rounded-md tracking-wide text-white text-lg bg-green-500'>
         {text}
     </button>
+    :
+          <button className='p-3 text-center active:scale-90 transition-all duration-150 w-28 rounded-md font-bold tracking-wider text-white text-lg bg-green-500'>
+        {text}
+      </button>
+  }
+  </>
   )
 }
 
