@@ -8,7 +8,9 @@ const Button = ({isSmall='false',
     <>
   {
     isSmall ? 
-    <button className={`p-1 ${extraClass} text-center active:scale-90 transition-all duration-150 w-28 rounded-md tracking-wide text-white text-lg bg-green-500`}>
+    <button className={`p-1 ${extraClass} text-center active:scale-90 transition-all duration-150 w-28 rounded-md tracking-wide text-white text-lg bg-green-500`}
+    onClick={onClick}
+    >
         {text}
     </button>
     :

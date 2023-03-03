@@ -1,12 +1,12 @@
 import LoginForm from "./LoginForm";
-import TestComp from "./TestComp"
+import Question from "./Question";
 import Button from "./Button";
 import TestCard from "./TestCard";
 import CustomInput from "./CustomInput";
 
-export{
+export {
     LoginForm,
-    TestComp, 
+    Question,
     Button,
     TestCard,
     CustomInput

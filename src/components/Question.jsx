@@ -3,7 +3,7 @@ import Button from "./Button"
 
 const optionsArr = ['fine', 'excellent', "neutral", 'not good']
 
-const TestComp = ({ Question="How are you ?", options = optionsArr, isMcq }) => {
+const Question = ({ Question="How are you ?", options = optionsArr, isMcq }) => {
 
   const [select, setSelect] = useState([false,false,false,false])
 
@@ -34,4 +34,4 @@ const TestComp = ({ Question="How are you ?", options = optionsArr, isMcq }) => 
   )
 }
 
-export default TestComp
+export default Question
