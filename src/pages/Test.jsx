@@ -1,30 +1,38 @@
-import React from 'react'
-import { Question, Button } from '../components'
-import {useState} from 'react'
-import {data} from '../Data/dummyData'
+import React, { useEffect } from 'react'
+import { Question, Button, QuestionNavElement } from '../components'
+import { useState } from 'react'
+import { data } from '../Data/dummyData'
 
 const Test = () => {
 
   const [currQuestion, setCurrQuestion] = useState(0)
+  const [answers, setAnswers] = useState({})
 
   const handleNext = () => {
-    if(currQuestion !== data.length-1){
+    if (currQuestion !== data.length - 1) {
       setCurrQuestion(currQuestion + 1)
     }
   }
 
   const handlePrev = () => {
-    if(currQuestion !== 0){
+    if (currQuestion !== 0) {
       setCurrQuestion(currQuestion - 1)
     }
   }
 
+  useEffect(() => {
+    console.log(answers)
+  }, [answers])
+
   return (
     <main className='w-screen h-screen text-center bg-orange-300 flex p-8 gap-8'>
       <div className="bg-white h-full w-[70%] rounded-xl p-4 text-start overflow-auto relative">
-        <Question 
-        Question={data[currQuestion].question}
-        options={data[currQuestion].options}
+        <Question
+          answers = {answers}
+          questionIndex = {currQuestion+1}
+          setAnswers={setAnswers}
+          Question={data[currQuestion].question}
+          options={data[currQuestion].options}
         ></Question>
         <div className='absolute bottom-0 left-0 w-full h-auto flex justify-between p-4'>
           <Button onClick={handlePrev} text='Prev'></Button>
@@ -36,10 +44,14 @@ const Test = () => {
           {/* List of Questions here */}
           {
             data.map((curr, index) => {
-              return(
-                <div className={`${currQuestion === index ?'bg-yellow-300' : 'bg-orange-400'} text-white font-semibold flex items-center justify-center rounded cursor-pointer`}
-                onClick={() => setCurrQuestion(index)}
-                 key={curr.question}>{index+1}</div>
+              return (
+                <QuestionNavElement
+                  currQuestion={currQuestion}
+                  index={index}
+                  key={index + curr.question}
+                  bookmarked={false}
+                  setCurrQuestion={setCurrQuestion}
+                />
               )
             })
           }
