@@ -2,11 +2,16 @@ import React, { useEffect } from 'react'
 import { Question, Button, QuestionNavElement } from '../components'
 import { useState } from 'react'
 import { data } from '../Data/dummyData'
+import { useNavigate } from 'react-router-dom'
+
 
 const Test = () => {
 
+  const navigate = useNavigate()
+
   const [currQuestion, setCurrQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
+
 
   const handleNext = () => {
     if (currQuestion !== data.length - 1) {
@@ -21,6 +26,21 @@ const Test = () => {
   }
 
   useEffect(() => {
+    // the element of fullscreen will be global. so that the changing of screen 
+    // can exit the test
+    if(document.fullscreenEnabled){
+      setTimeout(() => {
+        document.addEventListener('fullscreenchange', () => {
+          navigate('/')
+          alert('Test aborted')
+          document.removeEventListener('fullscreenchange')
+          // working smoothly good student can only click on test once.
+        })
+      }, 2000)
+    }
+  }, [])
+
+  useEffect(() => {
     console.log(answers)
   }, [answers])
 
@@ -28,8 +48,8 @@ const Test = () => {
     <main className='w-screen h-screen text-center bg-orange-300 flex p-8 gap-8'>
       <div className="bg-white h-full w-[70%] rounded-xl p-4 text-start overflow-auto relative">
         <Question
-          answers = {answers}
-          questionIndex = {currQuestion+1}
+          answers={answers}
+          questionIndex={currQuestion + 1}
           setAnswers={setAnswers}
           Question={data[currQuestion].question}
           options={data[currQuestion].options}
