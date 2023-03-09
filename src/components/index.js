@@ -4,6 +4,7 @@ import Button from "./Button";
 import TestCard from "./TestCard";
 import CustomInput from "./CustomInput";
 import QuestionNavElement from "./QuestionNavElement";
+import Timer from "./Timer";
 
 export {
     LoginForm,
@@ -11,5 +12,6 @@ export {
     Button,
     TestCard,
     CustomInput,
-    QuestionNavElement
+    QuestionNavElement,
+    Timer,
 }
