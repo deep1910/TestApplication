@@ -1,12 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { FiEye, FiEyeOff} from 'react-icons/fi'
+import React, { useEffect, useState } from 'react'
 
 const CustomInput = ({
     onKeyUp = () => {},
+    setInput = () => {},
     placeHolderText='user Id',
 }) => {
 
     const [value, setValue] = useState('')
+
+    useEffect(() => {
+        setInput(value)
+        // console.log(value)
+    },[value])
 
     return (
         <div className='mt-4 w-full bg-white overflow-hidden rounded-md flex'>
