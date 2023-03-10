@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react'
-import { Question, Button, QuestionNavElement } from '../components'
+import { Question, Button, QuestionNavElement, Timer } from '../components'
 import { useState } from 'react'
 import { data } from '../Data/dummyData'
 import { useNavigate } from 'react-router-dom'
 
 
+const testEndTime =  "March 10, 2023 11:26:30"
 const Test = () => {
 
   const navigate = useNavigate()
 
   const [currQuestion, setCurrQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
+  const [finishTest, setFinishTest] = useState(false) // this is creating problem.
 
 
   const handleNext = () => {
@@ -31,14 +33,19 @@ const Test = () => {
     if(document.fullscreenEnabled){
       setTimeout(() => {
         document.addEventListener('fullscreenchange', () => {
-          navigate('/')
-          alert('Test aborted')
+          // test finishing logic here
+          // navigate('/')    // I have to uncomment this code  commented only for testing purpose.
+          // alert('Test Submitted due to full screen disable')
           document.removeEventListener('fullscreenchange')
-          // working smoothly good student can only click on test once.
+          // working smoothly good : student can only click on test once.
         })
       }, 2000)
     }
   }, [])
+
+  useEffect(() => {
+    finishTest && alert('test finished')
+  }, [finishTest])
 
   useEffect(() => {
     console.log(answers)
@@ -76,7 +83,10 @@ const Test = () => {
             })
           }
         </div>
-        <div className="h-[50%] w-full rounded-xl p-4 text-start overflow-auto grid place-items-center text-center text-red-500">Warning</div>
+        <div className="h-[50%] w-full rounded-xl p-4 overflow-auto flex flex-col items-center justify-center gap-3 text-center text-red-500">
+          <h1 className='font-bold tracking-wider text-black text-2xl'>Time left</h1>
+          <Timer setFinishTest={setFinishTest} deadline={testEndTime}></Timer>
+        </div>
       </div>
     </main>
   )

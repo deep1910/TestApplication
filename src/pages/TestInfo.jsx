@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react'
-import { Button } from '../components'
+import { useState } from 'react'
+import { Button, Timer } from '../components'
 import { useNavigate } from 'react-router-dom'
+
+const deadline = "March 10, 2023 011:00:00"
 
 const TestInfo = ({
   testName = 'Random Test',
   testId = 'random1023be43',
 }) => {
   const navigate = useNavigate()
+  //state of button
+  const [flag, setFlag] = useState(true)
 
   const handleFllScreenClick = () => {
     if (!document.fullscreenElement) {
@@ -18,8 +22,10 @@ const TestInfo = ({
     }
   }
 
+
+
   return (
-    <main className='w-full h-screen p-16 flex flex-col justify-between items-center'>
+    <main className='w-full h-screen p-8 flex flex-col justify-between items-center gap-2'>
       <h1 className='text-2xl text-center font-bold'>{testName}</h1>
       <h1 className='mt-2 text-42xl text-center font-semibold'>Id: {testId}</h1>
       <div className='mb-4 w-full h-[70%] bg-orange-300 rounded-md p-4'>
@@ -41,10 +47,16 @@ const TestInfo = ({
           Check your work: Once you have completed the exam, take a few minutes to review your answers and make sure you have marked them correctly. Check that you have answered all of the questions and that your answer sheet is complete.
         </div>
       </div>
-      <Button onClick={() => {
-        navigate('/test')
-        handleFllScreenClick()
-      }} text='Start Test' extraClass='font-bold p-3'></Button>
+      {
+        !flag
+          ?
+          <Button onClick={() => {
+            navigate('/test')
+            handleFllScreenClick()
+          }} text='Start Test' extraClass='font-bold p-3'></Button>
+          :
+          <Timer setFlag={setFlag} deadline={deadline}></Timer>
+      }
     </main>
   )
 }
