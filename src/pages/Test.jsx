@@ -5,7 +5,7 @@ import { data } from '../Data/dummyData'
 import { useNavigate } from 'react-router-dom'
 
 
-const testEndTime =  "March 10, 2023 11:26:30"
+const testEndTime =  "March 12, 2023 11:26:30"
 const Test = () => {
 
   const navigate = useNavigate()
@@ -32,15 +32,17 @@ const Test = () => {
     // can exit the test
     if(document.fullscreenEnabled){
       setTimeout(() => {
+        // document.addEventListener('offline', alert('You are offline'))
         document.addEventListener('fullscreenchange', () => {
           // test finishing logic here
-          // navigate('/')    // I have to uncomment this code  commented only for testing purpose.
-          // alert('Test Submitted due to full screen disable')
+          navigate('/')    // I have to uncomment this code  commented only for testing purpose.
+          alert('Test Submitted due to full screen disable')
           document.removeEventListener('fullscreenchange')
           // working smoothly good : student can only click on test once.
         })
       }, 2000)
     }
+    // return () => {document.removeEventListener('offline', alert('You need to go online')) }
   }, [])
 
   useEffect(() => {

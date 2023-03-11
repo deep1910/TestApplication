@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Timer } from '../components'
 import { useNavigate } from 'react-router-dom'
 
-const deadline = "March 10, 2023 011:00:00"
+const deadline = "March 12, 2023 011:00:00"
 
 const TestInfo = ({
   testName = 'Random Test',

@@ -3,10 +3,15 @@ import CustomInput from './CustomInput'
 import Button from './Button'
 import PasswordInput from './PasswordInput'
 import { StudentLogin } from '../api'
+import { useDispatch} from 'react-redux'
+import { setUser } from '../features/auth/authSlice'
 
 const LoginForm = () => {
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
+
+  //redux toolkit hooks
+  const dispatch = useDispatch()
 
   const handleLogin = async() => {
     if(!userId || !password ){
@@ -15,13 +20,21 @@ const LoginForm = () => {
     const credentials = {
       userId, password
     }
-    
-    const res = await StudentLogin(credentials)
-    const data = await res.data
-    const { name ,rollNumber} = await data.user
-    // console.log(data)
-    localStorage.setItem('studentTestApp',name); // temproary Not a secure solutionnpm 
-    await alert(`Welcome ${name} your rollNumber is ${rollNumber}`)
+    try {
+      const res = await StudentLogin(credentials)
+      const data = await res.data
+      const { name, rollNumber } = await data.user
+      // console.log(data)
+      // localStorage.setItem('studentTestApp', name); // temproary Not a secure solutionnpm 
+      dispatch(setUser({
+        name: name,
+        rollNumber: rollNumber
+      })) // successfull implementation of auth with user
+      // await alert(`Welcome ${name} your rollNumber is ${rollNumber}`)
+    }catch (e) {
+      alert('Login Error'+ e)
+      console.log(e)
+    }
   }
 
   return (
