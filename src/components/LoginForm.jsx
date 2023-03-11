@@ -20,7 +20,7 @@ const LoginForm = () => {
     const data = await res.data
     const { name ,rollNumber} = await data.user
     // console.log(data)
-    localStorage.setItem('studentTestApp',name); // temproary Not a secure solution
+    localStorage.setItem('studentTestApp',name); // temproary Not a secure solutionnpm 
     await alert(`Welcome ${name} your rollNumber is ${rollNumber}`)
   }
 
