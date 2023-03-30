@@ -1,18 +1,22 @@
 import React, { useEffect } from 'react'
 import { Question, Button, QuestionNavElement, Timer } from '../components'
 import { useState } from 'react'
-import { data } from '../Data/dummyData'
-import { useNavigate } from 'react-router-dom'
+// import { data } from '../Data/dummyData'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { getQuestionsByTest } from '../api'
+import { useSelector } from 'react-redux'
 
 
-const testEndTime =  "March 12, 2023 11:26:30"
+// const testEndTime =  "March 23, 2023 10:01:00"
 const Test = () => {
 
   const navigate = useNavigate()
-
+  const location = useLocation()
+  const token = useSelector(state => state.auth.token)
   const [currQuestion, setCurrQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
   const [finishTest, setFinishTest] = useState(false) // this is creating problem.
+  const [data, setData] = useState()
 
 
   const handleNext = () => {
@@ -25,6 +29,10 @@ const Test = () => {
     if (currQuestion !== 0) {
       setCurrQuestion(currQuestion - 1)
     }
+  }
+
+  const finishTheTest = () => {
+
   }
 
   useEffect(() => {
@@ -47,11 +55,36 @@ const Test = () => {
 
   useEffect(() => {
     finishTest && alert('test finished')
+    finishTest && navigate('/')
   }, [finishTest])
 
   useEffect(() => {
     console.log(answers)
   }, [answers])
+
+  useEffect(() => {
+    const getAllQuestions = async() => {
+      try{
+        const res = await getQuestionsByTest({
+          testId: location.state.objectId,
+        }, token)
+        const thisData = await res.data
+        console.log("questions: "+ thisData)
+        console.log("objectId: "+ location.state.objectId)
+        setData(thisData)
+      }catch(e) {
+        console.log(e)
+      }
+    }
+    getAllQuestions()
+  },[])
+
+
+  if(!data) {
+    return (
+      <h1>There are no questions available for this test.</h1>
+    )
+  }
 
   return (
     <main className='w-screen h-screen text-center bg-orange-300 flex p-8 gap-8'>
@@ -65,7 +98,12 @@ const Test = () => {
         ></Question>
         <div className='absolute bottom-0 left-0 w-full h-auto flex justify-between p-4'>
           <Button onClick={handlePrev} text='Prev'></Button>
-          <Button onClick={handleNext} text='Next'></Button>
+          {
+            currQuestion === data.length-1 ?  
+            <Button onClick={() => setFinishTest(true)} text='Finish' ></Button>
+            : 
+            <Button onClick={handleNext} text='Next'></Button>
+          }
         </div>
       </div>
       <div className='h-full w-[30%] rounded-xl text-start'>
@@ -87,7 +125,12 @@ const Test = () => {
         </div>
         <div className="h-[50%] w-full rounded-xl p-4 overflow-auto flex flex-col items-center justify-center gap-3 text-center text-red-500">
           <h1 className='font-bold tracking-wider text-black text-2xl'>Time left</h1>
-          <Timer setFinishTest={setFinishTest} deadline={testEndTime}></Timer>
+          <Timer 
+          setFinishTest={setFinishTest}
+          date={location.state.date}
+          startTime={location.state.startTime}
+          endTime={location.state.endTime}
+          ></Timer>
         </div>
       </div>
     </main>

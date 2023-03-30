@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 
 const SECOND = 1000;
@@ -8,12 +8,17 @@ const DAY = HOUR * 24;
 
 
 const Timer = ({
-    deadline = "March 10, 2023 16:30:00",
-    setFlag = () => {},
-    setFinishTest = () => {}
+    date,
+    startTime,
+    endTime,
+    setFlag,
+    setFinishTest
 }) => {
-    const parsedDeadline = useMemo(() => Date.parse(deadline), [deadline])
-    const [time, setTime] = useState(parsedDeadline - Date.now())
+    const deadlineTime = endTime ? `${endTime}:00` : `${startTime}:00` //startTime+ ":00"
+    const actualDeadline = date + " " + deadlineTime // time format correction.
+    const parsedDeadline = useMemo(() => Date.parse(actualDeadline), [actualDeadline])
+    const [time, setTime] = useState() //parsedDeadline - Date.now()
+    console.log(actualDeadline, parsedDeadline)
 
 
     useEffect(() => {
@@ -22,37 +27,37 @@ const Timer = ({
     })
 
     useEffect(() => {
-        const flagInterval = setInterval( () => {
+        const flagInterval = setInterval(() => {
             if (parsedDeadline <= Date.now())
                 setFlag(false)
         }, 1000)
 
-        return () => clearInterval(flagInterval) 
-    }, )
+        return () => clearInterval(flagInterval)
+    },)
 
     useEffect(() => {
-        if(time <= 0) {
+        if (time <= 0) {
             setFinishTest(true)
         }
     }, [time])
 
-  return (
-    <div className='flex gap-2'>
-          {Object.entries({
-              Days: time / DAY,
-              Hours: (time / HOUR) % 24,
-              Minutes: (time / MINUTE) % 60,
-              Seconds: (time / SECOND) % 60,
-          }).map(([label, value]) => (
-              <div key={label} className="col-4">
-                  <div className="p-4 bg-purple-500 text-white rounded-md w-[5rem] shadow-md">
-                      <p className='text-xl text-center font-bold'>{`${Math.floor(value)}`.padStart(2, "0")}</p>
-                      <p className="text-center text-sm">{label}</p>
-                  </div>
-              </div>
-          ))}
-    </div>
-  )
+    return (
+        <div className='flex gap-2'>
+            {Object.entries({
+                Days: time / DAY,
+                Hours: (time / HOUR) % 24,
+                Minutes: (time / MINUTE) % 60,
+                Seconds: (time / SECOND) % 60,
+            }).map(([label, value]) => (
+                <div key={label} className="col-4">
+                    <div className="p-4 bg-purple-500 text-white rounded-md w-[5rem] shadow-md">
+                        <p className='text-xl text-center font-bold'>{`${Math.floor(value)}`.padStart(2, "0")}</p>
+                        <p className="text-center text-sm">{label}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
 }
 
 export default Timer

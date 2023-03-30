@@ -5,10 +5,14 @@ import PasswordInput from './PasswordInput'
 import { StudentLogin } from '../api'
 import { useDispatch} from 'react-redux'
 import { setUser } from '../features/auth/authSlice'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
+
+  //navigate
+  const navigate = useNavigate()
 
   //redux toolkit hooks
   const dispatch = useDispatch()
@@ -23,14 +27,18 @@ const LoginForm = () => {
     try {
       const res = await StudentLogin(credentials)
       const data = await res.data
-      const { name, rollNumber } = await data.user
+      const { name, rollNumber, university, token } = await data.user
       // console.log(data)
       // localStorage.setItem('studentTestApp', name); // temproary Not a secure solutionnpm 
       dispatch(setUser({
         name: name,
-        rollNumber: rollNumber
+        rollNumber: rollNumber,
+        university: university,
+        token: token
       })) // successfull implementation of auth with user
+      // console.log(university)
       // await alert(`Welcome ${name} your rollNumber is ${rollNumber}`)
+      navigate('/')
     }catch (e) {
       alert('Login Error'+ e)
       console.log(e)

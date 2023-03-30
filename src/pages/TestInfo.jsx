@@ -1,20 +1,21 @@
 import { useState } from 'react'
 import { Button, Timer } from '../components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
-const deadline = "March 12, 2023 011:00:00"
+// const deadline = "March 28, 2023 00:23:00"
 
 const TestInfo = ({
   testName = 'Random Test',
   testId = 'random1023be43',
 }) => {
   const navigate = useNavigate()
+  const location = useLocation()
   //state of button
   const [flag, setFlag] = useState(true)
 
   const handleFllScreenClick = () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+      // document.documentElement.requestFullscreen();
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen()
@@ -51,11 +52,20 @@ const TestInfo = ({
         !flag
           ?
           <Button onClick={() => {
-            navigate('/test')
+            navigate('/test', { state: { 
+              objectId: location.state.objectId,
+              startTime: location.state.startTime,
+              endTime: location.state.endTime,
+              date:  location.state.date
+             }})
             handleFllScreenClick()
           }} text='Start Test' extraClass='font-bold p-3'></Button>
           :
-          <Timer setFlag={setFlag} deadline={deadline}></Timer>
+          <Timer
+           setFlag={setFlag}
+           startTime={location.state.startTime} 
+           date={location.state.date}>
+           </Timer>
       }
     </main>
   )

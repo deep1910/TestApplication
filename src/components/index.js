@@ -5,6 +5,7 @@ import TestCard from "./TestCard";
 import CustomInput from "./CustomInput";
 import QuestionNavElement from "./QuestionNavElement";
 import Timer from "./Timer";
+import ProtectedRoutes from './ProtectedRoutes'
 
 export {
     LoginForm,
@@ -14,4 +15,5 @@ export {
     CustomInput,
     QuestionNavElement,
     Timer,
+    ProtectedRoutes
 }
